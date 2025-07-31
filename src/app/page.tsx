@@ -1,3 +1,9 @@
+import { Button } from "../components/ui/button";
+
 export default function Home() {
-  return <div>Home Page</div>;
+  return (
+    <div className="flex items-center justify-center h-screen">
+      <Button variant="teritary">Primary</Button>
+    </div>
+  );
 }
