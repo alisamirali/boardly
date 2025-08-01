@@ -1,3 +1,5 @@
+"use client";
+
 import { DottedSeparator } from "@/components";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,7 +28,7 @@ import { FcGoogle } from "react-icons/fc";
 import { z } from "zod";
 
 export function SignUpCard() {
-  const { mutate } = useSignUp();
+  const { mutate, isPending } = useSignUp();
 
   const form = useForm<z.infer<typeof signUpFormSchema>>({
     resolver: zodResolver(signUpFormSchema),
@@ -110,7 +112,12 @@ export function SignUpCard() {
               )}
             />
 
-            <Button className="w-full" type="submit" disabled={false} size="lg">
+            <Button
+              className="w-full"
+              type="submit"
+              disabled={isPending}
+              size="lg"
+            >
               Sign up
             </Button>
           </form>
@@ -126,7 +133,7 @@ export function SignUpCard() {
           className="w-full"
           variant="secondary"
           size="lg"
-          disabled={false}
+          disabled={isPending}
         >
           <FcGoogle className="mr-2 size-5" />
           Sign up with Google
@@ -136,7 +143,7 @@ export function SignUpCard() {
           className="w-full"
           variant="secondary"
           size="lg"
-          disabled={false}
+          disabled={isPending}
         >
           <FaGithub className="mr-2 size-5" />
           Sign up with GitHub
