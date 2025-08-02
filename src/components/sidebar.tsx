@@ -1,4 +1,4 @@
-import { DottedSeparator, Navigation } from "@/components";
+import { DottedSeparator, Navigation, WorkspaceSwitcher } from "@/components";
 import Link from "next/link";
 
 export function Sidebar() {
@@ -7,6 +7,8 @@ export function Sidebar() {
       <Link href="/" className="text-2xl font-bold text-[#2563eb]">
         Boardly.
       </Link>
+      <DottedSeparator className="my-4" />
+      <WorkspaceSwitcher />
       <DottedSeparator className="my-4" />
       <Navigation />
     </aside>

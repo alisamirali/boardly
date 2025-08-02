@@ -4,15 +4,15 @@ import { AUTH_COOKIE } from "@/features/auth/constants";
 import { getCookie } from "hono/cookie";
 import { createMiddleware } from "hono/factory";
 import {
-  Account,
-  Client,
-  Databases,
-  Models,
-  Storage,
-  type Account as AccountType,
-  type Databases as DatabasesType,
-  type Storage as StorageType,
-  type Users as UsersType,
+    Account,
+    Client,
+    Databases,
+    Models,
+    Storage,
+    type Account as AccountType,
+    type Databases as DatabasesType,
+    type Storage as StorageType,
+    type Users as UsersType,
 } from "node-appwrite";
 
 type Context = {
