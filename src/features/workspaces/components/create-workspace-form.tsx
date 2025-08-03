@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { useCreateWorkSpace } from "@/features/workspaces/api";
 import { createWorkspacesSchema } from "@/features/workspaces/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
@@ -23,6 +24,7 @@ type Props = {
 };
 
 export function CreateWorkspaceForm({ onCancel }: Props) {
+  const router = useRouter();
   const { mutate, isPending } = useCreateWorkSpace();
   const form = useForm<z.infer<typeof createWorkspacesSchema>>({
     resolver: zodResolver(createWorkspacesSchema),
@@ -35,8 +37,10 @@ export function CreateWorkspaceForm({ onCancel }: Props) {
     mutate(
       { form: values },
       {
-        onSuccess: () => {
+        onSuccess: ({ data }) => {
           form.reset();
+
+          router.push(`/workspaces/${data.$id}`);
         },
       }
     );
