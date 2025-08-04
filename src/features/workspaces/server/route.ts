@@ -1,6 +1,10 @@
 import { DATABASE_ID, MEMBERS_ID, WORKSPACES_ID } from "@/config";
 import { MemberRole } from "@/features/members/types";
-import { createWorkspacesSchema } from "@/features/workspaces/schemas";
+import { getMember } from "@/features/members/utils";
+import {
+  createWorkspacesSchema,
+  updateWorkspacesSchema,
+} from "@/features/workspaces/schemas";
 import { sessionMiddleware } from "@/lib/session-middleware";
 import { generateInviteCode } from "@/lib/utils";
 import { zValidator } from "@hono/zod-validator";
@@ -56,6 +60,38 @@ const app = new Hono()
         workspaceId: workspace.$id,
         role: MemberRole.ADMIN,
       });
+
+      return c.json({ data: workspace });
+    }
+  )
+  .patch(
+    "/:workspaceId",
+    sessionMiddleware,
+    zValidator("form", updateWorkspacesSchema),
+    async (c) => {
+      const databases = c.get("databases");
+      const user = c.get("user");
+
+      const { workspaceId } = c.req.param();
+      const { name } = c.req.valid("form");
+
+      const member = await getMember({
+        databases,
+        workspaceId,
+        userId: user.$id,
+      });
+
+      if (!member || member.role !== MemberRole.ADMIN)
+        return c.json({ error: "Unauthorized" }, 401);
+
+      const workspace = await databases.updateDocument(
+        DATABASE_ID,
+        WORKSPACES_ID,
+        workspaceId,
+        {
+          name,
+        }
+      );
 
       return c.json({ data: workspace });
     }
