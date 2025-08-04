@@ -79,19 +79,21 @@ export function CreateWorkspaceForm({ onCancel }: Props) {
 
             <DottedSeparator className="py-7" />
 
-            <div className="flex items-center justify-between">
-              <Button
-                type="button"
-                size="lg"
-                variant="secondary"
-                onClick={onCancel}
-                disabled={isPending}
-              >
-                Cancel
-              </Button>
+            <div className="flex items-center justify-end gap-4">
+              {onCancel && (
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="secondary"
+                  onClick={onCancel}
+                  disabled={isPending}
+                >
+                  Cancel
+                </Button>
+              )}
               <Button
                 type="submit"
-                size="lg"
+                size="sm"
                 variant="primary"
                 disabled={isPending}
               >
