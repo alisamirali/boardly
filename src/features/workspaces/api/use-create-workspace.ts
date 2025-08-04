@@ -14,7 +14,7 @@ export const useCreateWorkSpace = () => {
       const response = await client.api.workspaces.$post({ form });
 
       if (!response.ok) {
-        throw new Error("Something went wrong");
+        throw new Error("Failed to create workspace");
       }
 
       return await response.json();
