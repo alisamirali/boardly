@@ -1,14 +1,15 @@
 import { getCurrent } from "@/features/auth/actions";
+import { CreateWorkspaceForm } from "@/features/workspaces/components";
 import { redirect } from "next/navigation";
 
-export default async function WorkspacePage() {
+export default async function CreateWorkSpacePage() {
   const user = await getCurrent();
 
   if (!user) redirect("/sign-in");
 
   return (
-    <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-bold">Workspace</h1>
+    <div className="w-full lg:max-w-xl">
+      <CreateWorkspaceForm />
     </div>
   );
 }
