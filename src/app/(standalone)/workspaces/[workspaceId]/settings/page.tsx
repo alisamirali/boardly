@@ -12,7 +12,7 @@ type Props = {
 export default async function SettingsPage({ params }: Props) {
   const user = await getCurrent();
 
-  if (!user) redirect("/sign-ing");
+  if (!user) redirect("/sign-in");
 
   const initialValues = await getWorkspace({ workspaceId: params.workspaceId });
 
