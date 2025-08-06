@@ -48,7 +48,10 @@ export function Navigation() {
     <ul className="flex flex-col ">
       {routes.map((route) => {
         const fullHref = `/workspaces/${workspaceId}${route.href}`;
-        const isActive = pathname === fullHref;
+        const isActive =
+          pathname === fullHref ||
+          pathname === fullHref.replace(/\/$/, "") ||
+          pathname === fullHref + "/";
         const Icon = isActive ? route.activeIcon : route.icon;
 
         return (
