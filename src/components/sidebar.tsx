@@ -1,4 +1,9 @@
-import { DottedSeparator, Navigation, WorkspaceSwitcher } from "@/components";
+import {
+  DottedSeparator,
+  Navigation,
+  Projects,
+  WorkspaceSwitcher,
+} from "@/components";
 import Link from "next/link";
 
 export function Sidebar() {
@@ -11,6 +16,8 @@ export function Sidebar() {
       <WorkspaceSwitcher />
       <DottedSeparator className="my-4" />
       <Navigation />
+      <DottedSeparator className="my-4" />
+      <Projects />
     </aside>
   );
 }

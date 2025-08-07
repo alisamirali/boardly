@@ -20,11 +20,15 @@ export function WorkspaceSwitcher() {
   const workspaceId = useWorkspaceId();
   const { open } = useCreateWorkSpaceModal();
 
-  const { data: workspaces } = useGetWorkspaces();
+  const { data: workspaces, isLoading } = useGetWorkspaces();
 
   const onSelect = (id: string) => {
     router.push(`/workspaces/${id}`);
   };
+
+  const currentWorkspace = workspaces?.documents.find(
+    (workspace) => workspace.$id === workspaceId
+  );
 
   return (
     <div className="flex flex-col gap-y-2">
@@ -37,18 +41,24 @@ export function WorkspaceSwitcher() {
         />
       </div>
 
-      <Select onValueChange={onSelect} value={workspaceId}>
+      <Select onValueChange={onSelect} value={workspaceId} disabled={isLoading}>
         <SelectTrigger className="w-full bg-neutral-200 font-medium p-2">
-          <SelectValue placeholder="Select workspace" />
+          <SelectValue placeholder="Select workspace">
+            {currentWorkspace && (
+              <div className="flex items-center gap-2">
+                <p className="text-lg">{currentWorkspace.emoji}</p>
+                <p className="truncate">{currentWorkspace.name}</p>
+              </div>
+            )}
+          </SelectValue>
         </SelectTrigger>
         <SelectContent>
           {workspaces?.documents.map((workspace) => (
-            <SelectItem
-              key={workspace.$id}
-              value={workspace.$id}
-              className="flex items-center gap-2"
-            >
-              <p className="truncate">{workspace.name}</p>
+            <SelectItem key={workspace.$id} value={workspace.$id}>
+              <div className="flex items-center gap-2">
+                <p className="text-lg">{workspace.emoji}</p>
+                <p className="truncate">{workspace.name}</p>
+              </div>
             </SelectItem>
           ))}
         </SelectContent>

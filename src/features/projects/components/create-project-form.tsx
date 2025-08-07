@@ -12,10 +12,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useCreateWorkSpace } from "@/features/workspaces/api";
-import { workspaceSchema } from "@/features/workspaces/schemas";
+import { useCreateProject } from "@/features/projects/api";
+import { projectSchema } from "@/features/projects/schemas";
+import { useWorkspaceId } from "@/features/workspaces/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
@@ -23,25 +23,26 @@ type Props = {
   onCancel?: () => void;
 };
 
-export function CreateWorkspaceForm({ onCancel }: Props) {
-  const router = useRouter();
-  const { mutate, isPending } = useCreateWorkSpace();
-  const form = useForm<z.infer<typeof workspaceSchema>>({
-    resolver: zodResolver(workspaceSchema),
+export function CreateProjectForm({ onCancel }: Props) {
+  const { mutate, isPending } = useCreateProject();
+  const workspaceId = useWorkspaceId();
+
+  const formSchema = projectSchema.omit({ workspaceId: true });
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       emoji: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof workspaceSchema>) => {
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     mutate(
-      { form: values },
+      { form: { ...values, workspaceId } },
       {
-        onSuccess: ({ data }) => {
+        onSuccess: () => {
           form.reset();
-
-          router.push(`/workspaces/${data.$id}`);
+          onCancel?.();
         },
       }
     );
@@ -51,7 +52,7 @@ export function CreateWorkspaceForm({ onCancel }: Props) {
     <Card className="w-full h-full border-none shadow-none">
       <CardHeader className="flex p-7">
         <CardTitle className="text-xl font-bold">
-          Create a new workspace
+          Create a new project
         </CardTitle>
       </CardHeader>
 
@@ -68,7 +69,7 @@ export function CreateWorkspaceForm({ onCancel }: Props) {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Workspace Icon</FormLabel>
+                    <FormLabel>Project Icon</FormLabel>
                     <FormControl>
                       <div className="flex items-center gap-2">
                         <div className="flex-1">
@@ -90,9 +91,9 @@ export function CreateWorkspaceForm({ onCancel }: Props) {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Workspace Name</FormLabel>
+                    <FormLabel>Project Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter workspace name" {...field} />
+                      <Input placeholder="Enter project name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -120,7 +121,7 @@ export function CreateWorkspaceForm({ onCancel }: Props) {
                 variant="primary"
                 disabled={isPending}
               >
-                Create Workspace
+                Create Project
               </Button>
             </div>
           </form>
