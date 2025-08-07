@@ -17,7 +17,7 @@ import {
   useResetInviteCode,
   useUpdateWorkspace,
 } from "@/features/workspaces/api";
-import { updateWorkspacesSchema } from "@/features/workspaces/schemas";
+import { updateWorkspaceSchema } from "@/features/workspaces/schemas";
 import { Workspace } from "@/features/workspaces/types";
 import { useConfirm } from "@/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -53,8 +53,8 @@ export function EditWorkspaceForm({ onCancel, initialValues }: Props) {
     "destructive"
   );
 
-  const form = useForm<z.infer<typeof updateWorkspacesSchema>>({
-    resolver: zodResolver(updateWorkspacesSchema),
+  const form = useForm<z.infer<typeof updateWorkspaceSchema>>({
+    resolver: zodResolver(updateWorkspaceSchema),
     defaultValues: {
       ...initialValues,
     },
@@ -94,7 +94,7 @@ export function EditWorkspaceForm({ onCancel, initialValues }: Props) {
     );
   };
 
-  const onSubmit = (values: z.infer<typeof updateWorkspacesSchema>) => {
+  const onSubmit = (values: z.infer<typeof updateWorkspaceSchema>) => {
     mutate(
       { form: values, param: { workspaceId: initialValues.$id } },
       {
@@ -147,6 +147,31 @@ export function EditWorkspaceForm({ onCancel, initialValues }: Props) {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <div className="flex flex-col gap-y-4">
+                <FormField
+                  name="emoji"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Workspace Icon</FormLabel>
+                      <FormControl>
+                        <div className="flex items-center gap-2">
+                          <div className="text-2xl w-12 h-12 flex items-center justify-center border rounded-lg bg-gray-50">
+                            {field.value || initialValues.emoji}
+                          </div>
+                          <div className="flex-1">
+                            <Input
+                              placeholder="Paste an emoji here"
+                              value={field.value || ""}
+                              onChange={field.onChange}
+                              className="text-lg"
+                            />
+                          </div>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   name="name"
                   control={form.control}

@@ -2,8 +2,8 @@ import { DATABASE_ID, MEMBERS_ID, WORKSPACES_ID } from "@/config";
 import { MemberRole } from "@/features/members/types";
 import { getMember } from "@/features/members/utils";
 import {
-  createWorkspacesSchema,
-  updateWorkspacesSchema,
+  updateWorkspaceSchema,
+  workspaceSchema,
 } from "@/features/workspaces/schemas";
 import { Workspace } from "@/features/workspaces/types";
 import { sessionMiddleware } from "@/lib/session-middleware";
@@ -38,13 +38,13 @@ const app = new Hono()
   })
   .post(
     "/",
-    zValidator("form", createWorkspacesSchema),
+    zValidator("form", workspaceSchema),
     sessionMiddleware,
     async (c) => {
       const databases = c.get("databases");
       const user = c.get("user");
 
-      const { name } = c.req.valid("form");
+      const { name, emoji } = c.req.valid("form");
 
       const workspace = await databases.createDocument(
         DATABASE_ID,
@@ -54,6 +54,7 @@ const app = new Hono()
           name,
           userId: user.$id,
           inviteCode: generateInviteCode(10),
+          emoji: emoji,
         }
       );
 
@@ -69,13 +70,13 @@ const app = new Hono()
   .patch(
     "/:workspaceId",
     sessionMiddleware,
-    zValidator("form", updateWorkspacesSchema),
+    zValidator("form", updateWorkspaceSchema),
     async (c) => {
       const databases = c.get("databases");
       const user = c.get("user");
 
       const { workspaceId } = c.req.param();
-      const { name } = c.req.valid("form");
+      const { name, emoji } = c.req.valid("form");
 
       const member = await getMember({
         databases,
@@ -86,13 +87,15 @@ const app = new Hono()
       if (!member || member.role !== MemberRole.ADMIN)
         return c.json({ error: "Unauthorized" }, 401);
 
+      const updateData: any = {};
+      if (name !== undefined) updateData.name = name;
+      if (emoji !== undefined) updateData.emoji = emoji;
+
       const workspace = await databases.updateDocument(
         DATABASE_ID,
         WORKSPACES_ID,
         workspaceId,
-        {
-          name,
-        }
+        updateData
       );
 
       return c.json({ data: workspace });
