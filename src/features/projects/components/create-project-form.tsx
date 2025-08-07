@@ -16,6 +16,7 @@ import { useCreateProject } from "@/features/projects/api";
 import { projectSchema } from "@/features/projects/schemas";
 import { useWorkspaceId } from "@/features/workspaces/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
@@ -26,6 +27,7 @@ type Props = {
 export function CreateProjectForm({ onCancel }: Props) {
   const { mutate, isPending } = useCreateProject();
   const workspaceId = useWorkspaceId();
+  const router = useRouter();
 
   const formSchema = projectSchema.omit({ workspaceId: true });
   const form = useForm<z.infer<typeof formSchema>>({
@@ -40,9 +42,9 @@ export function CreateProjectForm({ onCancel }: Props) {
     mutate(
       { form: { ...values, workspaceId } },
       {
-        onSuccess: () => {
+        onSuccess: ({ data }) => {
           form.reset();
-          onCancel?.();
+          router.push(`/workspaces/${workspaceId}/projects/${data.$id}`);
         },
       }
     );

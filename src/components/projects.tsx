@@ -14,8 +14,6 @@ export function Projects() {
   const { open } = useCreateProjectModal();
   const pathname = usePathname();
 
-  const projectId = null;
-
   return (
     <div className="flex flex-col gap-y-2">
       <div className="flex items-center justify-between">
@@ -27,16 +25,16 @@ export function Projects() {
         />
       </div>
 
-      <div className="mt-3 flex flex-col items-start gap-3">
+      <div className="mt-3 flex flex-col items-start gap-1">
         {data?.documents.map((project) => {
-          const href = `/workspaces/${workspaceId}/projects/${projectId}`;
+          const href = `/workspaces/${workspaceId}/projects/${project.$id}`;
           const isActive = pathname === href;
 
           return (
-            <Link href={href} key={project.$id}>
+            <Link href={href} key={project.$id} className="w-full">
               <div
                 className={cn(
-                  "flex items-center gap-2 px-2.5 rounded-md hover:opacity-75 transition cursor-pointer text-neutral-500",
+                  "flex items-center gap-2 px-2.5 rounded-md hover:opacity-75 transition cursor-pointer text-neutral-500 py-1.5",
                   isActive &&
                     "bg-white shadow-sm hover:opacity-100 text-primary"
                 )}

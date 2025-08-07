@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DATABASE_ID, MEMBERS_ID, WORKSPACES_ID } from "@/config";
 import { MemberRole } from "@/features/members/types";
 import { getMember } from "@/features/members/utils";

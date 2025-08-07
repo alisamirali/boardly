@@ -5,3 +5,8 @@ export const projectSchema = z.object({
   workspaceId: z.string(),
   emoji: z.string(),
 });
+
+export const updateProjectSchema = z.object({
+  name: z.string().trim().min(1, "Minimum on character required").optional(),
+  emoji: z.string().optional(),
+});
