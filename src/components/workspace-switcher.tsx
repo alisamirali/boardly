@@ -54,7 +54,11 @@ export function WorkspaceSwitcher() {
         </SelectTrigger>
         <SelectContent>
           {workspaces?.documents.map((workspace) => (
-            <SelectItem key={workspace.$id} value={workspace.$id}>
+            <SelectItem
+              key={workspace.$id}
+              value={workspace.$id}
+              className="cursor-pointer"
+            >
               <div className="flex items-center gap-2">
                 <p className="text-lg">{workspace.emoji}</p>
                 <p className="truncate">{workspace.name}</p>

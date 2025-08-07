@@ -24,20 +24,20 @@ const app = new Hono()
       const user = c.get("user");
       const { workspaceId } = c.req.valid("query");
 
-      const memeber = await getMember({
+      const member = await getMember({
         databases,
         workspaceId,
         userId: user.$id,
       });
 
-      if (!memeber) return c.json({ error: "Unauthorized" }, 401);
+      if (!member) return c.json({ error: "Unauthorized" }, 401);
 
       const members = await databases.listDocuments(DATABASE_ID, MEMBERS_ID, [
         Query.equal("workspaceId", workspaceId),
       ]);
 
       const populatedMembers = await Promise.all(
-        members.documents.map(async (member: any) => {
+        members.documents.map(async (member) => {
           const user = await users.get(member.userId);
 
           return {
@@ -50,7 +50,7 @@ const app = new Hono()
 
       return c.json({
         data: {
-          ...memeber,
+          ...member,
           documents: populatedMembers,
         },
       });
@@ -61,7 +61,7 @@ const app = new Hono()
     const user = c.get("user");
     const databases = c.get("databases");
 
-    const memeberToDelete = await databases.getDocument(
+    const memberToDelete = await databases.getDocument(
       DATABASE_ID,
       MEMBERS_ID,
       memberId
@@ -70,21 +70,18 @@ const app = new Hono()
     const allMembersInWorkspace = await databases.listDocuments(
       DATABASE_ID,
       MEMBERS_ID,
-      [Query.equal("workspaceId", memeberToDelete.workspaceId)]
+      [Query.equal("workspaceId", memberToDelete.workspaceId)]
     );
 
     const member = await getMember({
       databases,
-      workspaceId: memeberToDelete.workspaceId,
+      workspaceId: memberToDelete.workspaceId,
       userId: user.$id,
     });
 
     if (!member) return c.json({ error: "Unauthorized" }, 401);
 
-    if (
-      member.$id !== memeberToDelete.$id &&
-      member.role !== MemberRole.ADMIN
-    ) {
+    if (member.$id !== memberToDelete.$id && member.role !== MemberRole.ADMIN) {
       return c.json({ error: "Unauthorized" }, 401);
     }
 
@@ -93,7 +90,7 @@ const app = new Hono()
 
     await databases.deleteDocument(DATABASE_ID, MEMBERS_ID, memberId);
 
-    return c.json({ data: { $id: memeberToDelete.$id } });
+    return c.json({ data: { $id: memberToDelete.$id } });
   })
   .patch(
     "/:memberId",
