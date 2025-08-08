@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { getCurrent } from "@/features/auth/queries";
 import { getProject } from "@/features/projects/queries";
+import { TaskViewSwitcher } from "@/features/tasks/components";
+import { PencilIcon } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -34,11 +36,14 @@ export default async function ProjectPage({ params }: Props) {
             <Link
               href={`/workspaces/${initialValues.workspaceId}/projects/${initialValues.$id}/settings`}
             >
+              <PencilIcon className="size-4" />
               Edit Project
             </Link>
           </Button>
         </div>
       </div>
+
+      <TaskViewSwitcher />
     </div>
   );
 }
