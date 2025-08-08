@@ -124,9 +124,8 @@ const app = new Hono()
         DATABASE_ID,
         TASKS_ID,
         [
-          Query.equal("status", status),
           Query.equal("workspaceId", workspaceId),
-          Query.orderAsc("position"),
+          Query.orderDesc("position"),
           Query.limit(1),
         ]
       );
