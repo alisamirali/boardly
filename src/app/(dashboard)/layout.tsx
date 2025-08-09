@@ -1,6 +1,6 @@
 import { Navbar, Sidebar } from "@/components";
 import { CreateProjectModal } from "@/features/projects/components";
-import { CreateTaskModal } from "@/features/tasks/components";
+import { CreateTaskModal, EditTaskModal } from "@/features/tasks/components";
 import { CreateWorkspaceModal } from "@/features/workspaces/components";
 
 export default function DashboardLayout({
@@ -13,6 +13,7 @@ export default function DashboardLayout({
       <CreateWorkspaceModal />
       <CreateProjectModal />
       <CreateTaskModal />
+      <EditTaskModal />
 
       <div className="flex w-full h-full">
         <div className="fixed left-0 top-0 hidden lg:block lg:w-[264px] h-full overflow-y-auto">
