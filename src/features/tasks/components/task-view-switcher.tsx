@@ -4,7 +4,12 @@ import { DottedSeparator } from "@/components";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useGetTasks } from "@/features/tasks/api";
-import { columns, DataFilters, DataTable } from "@/features/tasks/components";
+import {
+  columns,
+  DataFilters,
+  DataKanban,
+  DataTable,
+} from "@/features/tasks/components";
 import { useCreateTaskModal, useTaskFilters } from "@/features/tasks/hooks";
 import { useWorkspaceId } from "@/features/workspaces/hooks";
 import { Loader, PlusIcon } from "lucide-react";
@@ -67,7 +72,7 @@ export function TaskViewSwitcher() {
               <DataTable columns={columns} data={tasks?.documents ?? []} />
             </TabsContent>
             <TabsContent value="kanban" className="mt-0">
-              Kanban Data
+              <DataKanban data={tasks?.documents ?? []} />
             </TabsContent>
             <TabsContent value="calendar" className="mt-0">
               Calendar Data
