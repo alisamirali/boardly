@@ -9,6 +9,7 @@ export * from "./edit-task-form";
 export * from "./edit-task-form-wrapper";
 export * from "./edit-task-modal";
 export * from "./kanban-board-header";
+export * from "./kanban-card";
 export * from "./task-actions";
 export * from "./task-date";
 export * from "./task-view-switcher";
