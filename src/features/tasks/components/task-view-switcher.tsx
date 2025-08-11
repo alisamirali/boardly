@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useBuldUpdateTasks, useGetTasks } from "@/features/tasks/api";
 import {
   columns,
+  DataCalendar,
   DataFilters,
   DataKanban,
   DataTable,
@@ -90,8 +91,8 @@ export function TaskViewSwitcher() {
                 onChange={onKanbanChange}
               />
             </TabsContent>
-            <TabsContent value="calendar" className="mt-0">
-              Calendar Data
+            <TabsContent value="calendar" className="mt-0 h-full pb-4">
+              <DataCalendar data={tasks?.documents ?? []} />
             </TabsContent>
           </>
         )}
