@@ -11,7 +11,7 @@ type RequestType = InferRequestType<
   (typeof client.api.tasks)["bulk-update"]["$post"]
 >;
 
-export const useBuldUpdateTasks = () => {
+export const useBulkUpdateTasks = () => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation<ResponseType, Error, RequestType>({

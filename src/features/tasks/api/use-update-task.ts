@@ -35,7 +35,6 @@ export const useUpdateTask = () => {
       });
       queryClient.invalidateQueries({
         queryKey: ["task", data.$id],
-        exact: false,
       });
     },
     onError: () => {

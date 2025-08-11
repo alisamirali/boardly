@@ -3,6 +3,8 @@ export * from "./dotted-separator";
 export * from "./mobile-sidebar";
 export * from "./navbar";
 export * from "./navigation";
+export * from "./page-error";
+export * from "./page-loader";
 export * from "./projects";
 export * from "./query-provider";
 export * from "./sidebar";

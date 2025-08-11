@@ -3,7 +3,7 @@
 import { DottedSeparator } from "@/components";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useBuldUpdateTasks, useGetTasks } from "@/features/tasks/api";
+import { useBulkUpdateTasks, useGetTasks } from "@/features/tasks/api";
 import {
   columns,
   DataCalendar,
@@ -18,7 +18,11 @@ import { Loader, PlusIcon } from "lucide-react";
 import { useQueryState } from "nuqs";
 import { useCallback } from "react";
 
-export function TaskViewSwitcher() {
+type Props = {
+  hideProjectFilter?: boolean;
+};
+
+export function TaskViewSwitcher({ hideProjectFilter }: Props) {
   const [{ status, assigneeId, projectId, dueDate }] = useTaskFilters();
 
   const [view, setView] = useQueryState("task-view", {
@@ -27,7 +31,7 @@ export function TaskViewSwitcher() {
 
   const { open } = useCreateTaskModal();
   const workspaceId = useWorkspaceId();
-  const { mutate: updateTasks } = useBuldUpdateTasks();
+  const { mutate: updateTasks } = useBulkUpdateTasks();
 
   const { data: tasks, isLoading } = useGetTasks({
     workspaceId,
@@ -73,7 +77,7 @@ export function TaskViewSwitcher() {
         </div>
 
         <DottedSeparator className="my-4" />
-        <DataFilters />
+        <DataFilters hideProjectFilter={hideProjectFilter} />
         <DottedSeparator className="my-4" />
 
         {isLoading ? (
