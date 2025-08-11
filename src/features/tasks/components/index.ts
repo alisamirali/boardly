@@ -14,5 +14,8 @@ export * from "./event-card";
 export * from "./kanban-board-header";
 export * from "./kanban-card";
 export * from "./task-actions";
+export * from "./task-breadcrumbs";
 export * from "./task-date";
+export * from "./task-description";
+export * from "./task-overview";
 export * from "./task-view-switcher";

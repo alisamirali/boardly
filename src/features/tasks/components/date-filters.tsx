@@ -119,35 +119,37 @@ export function DataFilters({ hideProjectFilter }: Props) {
         </SelectContent>
       </Select>
 
-      <Select
-        defaultValue={projectId ?? undefined}
-        onValueChange={(value) => onProjectChange(value)}
-      >
-        <SelectTrigger className="w-full lg:flex-1 h-8">
-          <div className="flex items-center pr-2">
-            <FolderIcon className="size-4 mr-2" />
-            <SelectValue placeholder="All Projects" />
-          </div>
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all" className="cursor-pointer">
-            All Projects
-          </SelectItem>
-          <SelectSeparator />
-          {projectsOptions?.map((project) => (
-            <SelectItem
-              key={project.value}
-              value={project.value}
-              className="cursor-pointer"
-            >
-              <div className="flex items-center justify-start gap-1">
-                <p>{project.emoji}</p>
-                <p>{project.label}</p>
-              </div>
+      {!hideProjectFilter && (
+        <Select
+          defaultValue={projectId ?? undefined}
+          onValueChange={(value) => onProjectChange(value)}
+        >
+          <SelectTrigger className="w-full lg:flex-1 h-8">
+            <div className="flex items-center pr-2">
+              <FolderIcon className="size-4 mr-2" />
+              <SelectValue placeholder="All Projects" />
+            </div>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all" className="cursor-pointer">
+              All Projects
             </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+            <SelectSeparator />
+            {projectsOptions?.map((project) => (
+              <SelectItem
+                key={project.value}
+                value={project.value}
+                className="cursor-pointer"
+              >
+                <div className="flex items-center justify-start gap-1">
+                  <p>{project.emoji}</p>
+                  <p>{project.label}</p>
+                </div>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      )}
 
       <DatePicker
         placeholder="Due date"
