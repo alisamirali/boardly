@@ -3,6 +3,7 @@
 import { DottedSeparator } from "@/components";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useProjectId } from "@/features/projects/hooks";
 import { useBulkUpdateTasks, useGetTasks } from "@/features/tasks/api";
 import {
   columns,
@@ -23,7 +24,12 @@ type Props = {
 };
 
 export function TaskViewSwitcher({ hideProjectFilter }: Props) {
-  const [{ status, assigneeId, projectId, dueDate }] = useTaskFilters();
+  const [{ status, assigneeId, projectId: filterProjectId, dueDate }] =
+    useTaskFilters();
+  const urlProjectId = useProjectId();
+
+  // Use URL project ID when hideProjectFilter is true, otherwise use filter project ID
+  const effectiveProjectId = hideProjectFilter ? urlProjectId : filterProjectId;
 
   const [view, setView] = useQueryState("task-view", {
     defaultValue: "table",
@@ -36,7 +42,7 @@ export function TaskViewSwitcher({ hideProjectFilter }: Props) {
   const { data: tasks, isLoading } = useGetTasks({
     workspaceId,
     status,
-    projectId,
+    projectId: effectiveProjectId,
     assigneeId,
     dueDate,
   });
