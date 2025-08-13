@@ -39,6 +39,7 @@ type Props = {
     id: string;
     name: string;
   }[];
+  defaultProjectId?: string;
 };
 
 const taskStatusOptions = [
@@ -53,6 +54,7 @@ export function CreateTaskForm({
   onCancel,
   projectOptions,
   memberOptions,
+  defaultProjectId,
 }: Props) {
   const { mutate, isPending } = useCreateTask();
   const workspaceId = useWorkspaceId();
@@ -61,6 +63,7 @@ export function CreateTaskForm({
     resolver: zodResolver(createTaskSchema.omit({ workspaceId: true })),
     defaultValues: {
       workspaceId,
+      projectId: defaultProjectId,
     },
   });
 

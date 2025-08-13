@@ -3,9 +3,10 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useGetMembers } from "@/features/members/api";
 import { useGetProjects } from "@/features/projects/api";
-import { CreateTaskForm } from "@/features/tasks/components";
+import { useProjectId } from "@/features/projects/hooks";
 import { useWorkspaceId } from "@/features/workspaces/hooks";
 import { Loader } from "lucide-react";
+import { CreateTaskForm } from "./create-task-form";
 
 type Props = {
   onCancel: () => void;
@@ -13,6 +14,7 @@ type Props = {
 
 export function CreateTaskFormWrapper({ onCancel }: Props) {
   const workspaceId = useWorkspaceId();
+  const urlProjectId = useProjectId();
   const { data: projects, isLoading: isLoadingProjects } = useGetProjects({
     workspaceId,
   });
@@ -48,6 +50,7 @@ export function CreateTaskFormWrapper({ onCancel }: Props) {
       projectOptions={projectOptions ?? []}
       memberOptions={memberOptions ?? []}
       onCancel={onCancel}
+      defaultProjectId={urlProjectId}
     />
   );
 }

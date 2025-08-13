@@ -88,14 +88,7 @@ export function EditWorkspaceForm({ onCancel, initialValues }: Props) {
   };
 
   const onSubmit = (values: z.infer<typeof updateWorkspaceSchema>) => {
-    mutate(
-      { form: values, param: { workspaceId: initialValues.$id } },
-      {
-        onSuccess: () => {
-          form.reset();
-        },
-      }
-    );
+    mutate({ form: values, param: { workspaceId: initialValues.$id } });
   };
 
   const fullInviteLink = `${window.location.origin}/workspaces/${initialValues.$id}/join/${initialValues.inviteCode}`;
