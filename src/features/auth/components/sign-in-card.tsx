@@ -20,9 +20,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { useLogin } from "@/features/auth/api";
 import { signInFormSchema } from "@/features/auth/schemas";
+import { signUpWithGithub, signUpWithGoogle } from "@/lib/oauth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import { FaGithub } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { z } from "zod";
 
 export function SignInCard() {
@@ -106,7 +109,6 @@ export function SignInCard() {
         <DottedSeparator />
       </div>
 
-      {/*
       <CardContent className="p-7 flex flex-col gap-y-4">
         <Button
           className="w-full"
@@ -130,7 +132,6 @@ export function SignInCard() {
           Sign in with GitHub
         </Button>
       </CardContent>
-      */}
 
       <CardFooter className="p-7 flex items-center justify-center text-sm">
         <p>
