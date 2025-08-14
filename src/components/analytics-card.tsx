@@ -5,7 +5,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { ArrowDownToDot, ArrowUpFromDot } from "lucide-react";
+import { TrendingDown, TrendingUp } from "lucide-react";
 
 type Props = {
   title: string;
@@ -18,7 +18,7 @@ export function AnalyticsCard({ title, value, variant, increaseValue }: Props) {
   const iconColor = variant === "up" ? "text-emerald-500" : "text-red-500";
   const increaseValueColor =
     variant === "up" ? "text-emerald-500" : "text-red-500";
-  const Icon = variant === "up" ? ArrowUpFromDot : ArrowDownToDot;
+  const Icon = variant === "up" ? TrendingUp : TrendingDown;
 
   return (
     <Card className="shadow-none border-none w-full">
