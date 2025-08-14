@@ -19,9 +19,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { MemberAvatar } from "@/features/members/components";
 import { useCreateTask } from "@/features/tasks/api";
-import { createTaskSchema } from "@/features/tasks/schemas";
+import { createTaskFormSchema } from "@/features/tasks/schemas";
 import { TaskStatuses } from "@/features/tasks/types";
 import { useWorkspaceId } from "@/features/workspaces/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -59,21 +60,44 @@ export function CreateTaskForm({
   const { mutate, isPending } = useCreateTask();
   const workspaceId = useWorkspaceId();
 
-  const form = useForm<z.infer<typeof createTaskSchema>>({
-    resolver: zodResolver(createTaskSchema.omit({ workspaceId: true })),
+  const form = useForm<z.infer<typeof createTaskFormSchema>>({
+    resolver: zodResolver(createTaskFormSchema),
     defaultValues: {
-      workspaceId,
+      name: "",
+      status: TaskStatuses.TODO,
       projectId: defaultProjectId,
+      dueDate: "",
+      assigneeId: "",
+      description: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof createTaskSchema>) => {
+  const onSubmit = (values: z.infer<typeof createTaskFormSchema>) => {
+    console.log("Form values:", values);
+
+    const taskData = {
+      name: values.name,
+      status: values.status as TaskStatuses,
+      workspaceId,
+      projectId: values.projectId,
+      dueDate: values.dueDate
+        ? new Date(values.dueDate).toISOString()
+        : new Date().toISOString(),
+      assigneeId: values.assigneeId,
+      description: values.description,
+    };
+
+    console.log("Task data being sent:", taskData);
+
     mutate(
-      { json: { ...values, workspaceId } },
+      { json: taskData },
       {
         onSuccess: () => {
           form.reset();
           onCancel?.();
+        },
+        onError: (error) => {
+          console.error("Task creation error:", error);
         },
       }
     );
@@ -116,7 +140,13 @@ export function CreateTaskForm({
                   <FormItem>
                     <FormLabel>Due Date</FormLabel>
                     <FormControl>
-                      <DatePicker {...field} placeholder="Select due date" />
+                      <DatePicker
+                        value={field.value ? new Date(field.value) : undefined}
+                        onChange={(date) => {
+                          field.onChange(date ? date.toISOString() : "");
+                        }}
+                        placeholder="Select due date"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -162,39 +192,6 @@ export function CreateTaskForm({
                 )}
               />
 
-              {/* Select Status */}
-              <FormField
-                name="status"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Status</FormLabel>
-                    <Select
-                      defaultValue={field.value}
-                      onValueChange={field.onChange}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select status" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <FormMessage />
-                      <SelectContent>
-                        {taskStatusOptions.map(({ value, label }) => (
-                          <SelectItem
-                            key={value}
-                            value={value}
-                            className="cursor-pointer"
-                          >
-                            {label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
-
               {/* Select Project */}
               <FormField
                 name="projectId"
@@ -220,13 +217,66 @@ export function CreateTaskForm({
                             className="cursor-pointer"
                           >
                             <div className="flex items-center gap-x-2">
-                              <p>{project.emoji}</p>
+                              <span className="text-lg">{project.emoji}</span>
                               {project.name}
                             </div>
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
+                  </FormItem>
+                )}
+              />
+
+              {/* Select Status */}
+              <FormField
+                name="status"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Status</FormLabel>
+                    <Select
+                      defaultValue={field.value}
+                      onValueChange={field.onChange}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select status" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <FormMessage />
+                      <SelectContent>
+                        {taskStatusOptions.map((status) => (
+                          <SelectItem
+                            key={status.value}
+                            value={status.value}
+                            className="cursor-pointer"
+                          >
+                            {status.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+
+              {/* Description */}
+              <FormField
+                name="description"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description (Optional)</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        rows={4}
+                        placeholder="Enter task description"
+                        {...field}
+                        value={field.value || ""}
+                      />
+                    </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />

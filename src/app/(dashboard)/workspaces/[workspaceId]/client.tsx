@@ -149,7 +149,7 @@ function ProjectList({ data, total }: ProjectListProps) {
         <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {data.map((project) => (
             <li key={project.$id}>
-              <Link href={`/workspaces/${workspaceId}/tasks/${project.$id}`}>
+              <Link href={`/workspaces/${workspaceId}/projects/${project.$id}`}>
                 <Card className="shadow-none rounded-lg hover:opacity-75 transition">
                   <CardContent className="p-4 flex items-center gap-x-1.5">
                     <p className="text-base font-medium">{project.emoji}</p>

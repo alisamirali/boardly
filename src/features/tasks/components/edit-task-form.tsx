@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/select";
 import { MemberAvatar } from "@/features/members/components";
 import { useUpdateTask } from "@/features/tasks/api";
-import { createTaskSchema } from "@/features/tasks/schemas";
+import { editTaskFormSchema } from "@/features/tasks/schemas";
 import { Task, TaskStatuses } from "@/features/tasks/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -56,21 +56,32 @@ export function EditTaskForm({
   initialValues,
 }: Props) {
   const { mutate, isPending } = useUpdateTask();
-  const form = useForm<z.infer<typeof createTaskSchema>>({
-    resolver: zodResolver(
-      createTaskSchema.omit({ workspaceId: true, description: true })
-    ),
+  const form = useForm<z.infer<typeof editTaskFormSchema>>({
+    resolver: zodResolver(editTaskFormSchema),
     defaultValues: {
-      ...initialValues,
+      name: initialValues.name,
+      status: initialValues.status,
+      projectId: initialValues.projectId,
       dueDate: initialValues.dueDate
-        ? new Date(initialValues.dueDate)
-        : undefined,
+        ? new Date(initialValues.dueDate).toISOString()
+        : "",
+      assigneeId: initialValues.assigneeId,
     },
   });
 
-  const onSubmit = (values: z.infer<typeof createTaskSchema>) => {
+  const onSubmit = (values: z.infer<typeof editTaskFormSchema>) => {
+    const taskData = {
+      name: values.name,
+      status: values.status as TaskStatuses,
+      projectId: values.projectId,
+      dueDate: values.dueDate
+        ? new Date(values.dueDate).toISOString()
+        : new Date().toISOString(),
+      assigneeId: values.assigneeId,
+    };
+
     mutate(
-      { json: values, param: { taskId: initialValues.$id } },
+      { json: taskData, param: { taskId: initialValues.$id } },
       {
         onSuccess: () => {
           form.reset();
@@ -117,7 +128,13 @@ export function EditTaskForm({
                   <FormItem>
                     <FormLabel>Due Date</FormLabel>
                     <FormControl>
-                      <DatePicker {...field} placeholder="Select due date" />
+                      <DatePicker
+                        value={field.value ? new Date(field.value) : undefined}
+                        onChange={(date) => {
+                          field.onChange(date ? date.toISOString() : "");
+                        }}
+                        placeholder="Select due date"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
