@@ -2,7 +2,7 @@
 
 The only project management tool you need to plan and track work across every team.
 
-An end-to-end full stack Jira clone, all with workspaces, projects/epics, tasks, kanban boards, calendars, editing and deleting tasks, an invite system, a role-based access control system, image uploads, analytics, authentication, and more!
+An end-to-end full-stack Jira clone, all with workspaces, projects/epics, tasks, kanban boards, calendars, editing and deleting tasks, an invite system, a role-based access control system, image uploads, analytics, authentication, and more!
 
 ## Key Features
 
@@ -14,11 +14,9 @@ An end-to-end full stack Jira clone, all with workspaces, projects/epics, tasks,
 - 📅 Calendar View
 - ✉️ Invite System
 - ⚙️ Workspace and Project Settings
-- 🖼️ Image Uploads (for avatars and attachments)
 - 🔌 Appwrite SDK Integration
 - ⚛️ Next.js 14 Framework
 - 🎨 shadcn/ui & TailwindCSS Styling
-- 🔍 Advanced Search and Filtering
 - 📈 Analytics Dashboard
 - 👥 User Roles and Permissions
 - 🔒 Authentication (OAuth and Email)
