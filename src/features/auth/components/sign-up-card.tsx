@@ -6,7 +6,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -151,7 +150,7 @@ export function SignUpCard() {
         </Button>
       </CardContent>
       */}
-      <CardContent className="p-7 pt-0 flex items-center justify-center">
+      <CardContent className="p-7 flex items-center justify-center">
         <p className="text-sm text-center">
           Already have an account?{" "}
           <Link href="/sign-in" className="text-blue-500 hover:underline">
@@ -159,23 +158,6 @@ export function SignUpCard() {
           </Link>
         </p>
       </CardContent>
-
-      <CardFooter className="p-7 flex text-xs items-center justify-center w-full pt-0">
-        By signing up, you agree to our&nbsp;
-        <Link
-          href="/privacy-policy"
-          className="text-blue-500 text-center  hover:underline"
-        >
-          <span>Privacy Policy</span>
-        </Link>
-        <span>&nbsp;and&nbsp;</span>
-        <Link
-          href="/terms"
-          className="text-blue-500 text-center hover:underline"
-        >
-          <span>Terms of Service</span>
-        </Link>
-      </CardFooter>
     </Card>
   );
 }

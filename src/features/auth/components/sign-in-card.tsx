@@ -131,9 +131,6 @@ export function SignInCard() {
         </Button>
       </CardContent>
       */}
-      <div className="px-7">
-        <DottedSeparator />
-      </div>
 
       <CardFooter className="p-7 flex items-center justify-center text-sm">
         <p>
