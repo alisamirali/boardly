@@ -1,8 +1,8 @@
 "use client";
 
-import { PageError, PageLoader } from "@/components";
+import { Analytics, PageError, PageLoader } from "@/components";
 import { Button } from "@/components/ui/button";
-import { useGetProject } from "@/features/projects/api";
+import { useGetProject, useGetProjectAnalytics } from "@/features/projects/api";
 import { useProjectId } from "@/features/projects/hooks";
 import { TaskViewSwitcher } from "@/features/tasks/components";
 import { PencilIcon } from "lucide-react";
@@ -11,8 +11,10 @@ import Link from "next/link";
 export function ProjectIdPageClient() {
   const projectId = useProjectId();
   const { data: project, isLoading } = useGetProject({ projectId });
+  const { data: projectAnalytics, isLoading: isProjectAnalyticsLoading } =
+    useGetProjectAnalytics({ projectId });
 
-  if (isLoading) return <PageLoader />;
+  if (isLoading || isProjectAnalyticsLoading) return <PageLoader />;
   if (!project) return <PageError message="Project not found" />;
 
   return (
@@ -36,6 +38,8 @@ export function ProjectIdPageClient() {
           </Button>
         </div>
       </div>
+
+      {projectAnalytics && <Analytics data={projectAnalytics} />}
 
       <TaskViewSwitcher hideProjectFilter />
     </div>
