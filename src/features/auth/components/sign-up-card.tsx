@@ -20,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useSignUp } from "@/features/auth/api";
 import { signUpFormSchema } from "@/features/auth/schemas";
+import { signUpWithGithub, signUpWithGoogle } from "@/lib/oauth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -134,6 +135,7 @@ export function SignUpCard() {
           variant="secondary"
           size="lg"
           disabled={isPending}
+          onClick={() => signUpWithGoogle()}
         >
           <FcGoogle className="mr-2 size-5" />
           Sign up with Google
@@ -144,6 +146,7 @@ export function SignUpCard() {
           variant="secondary"
           size="lg"
           disabled={isPending}
+          onClick={() => signUpWithGithub()}
         >
           <FaGithub className="mr-2 size-5" />
           Sign up with GitHub
