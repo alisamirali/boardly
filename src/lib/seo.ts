@@ -1,19 +1,6 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 
-import { cn } from "@/lib/utils";
-
-import { QueryProvider } from "@/components";
-import { Toaster } from "@/components/ui/sonner";
-import "./globals.css";
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-});
-
-export const metadata: Metadata = {
+export const defaultMetadata: Metadata = {
   title: {
     default: "Boardly - Enterprise Project Management Platform",
     template: "%s | Boardly",
@@ -81,7 +68,7 @@ export const metadata: Metadata = {
     title: "Boardly - Enterprise Project Management Platform",
     description:
       "The comprehensive project management solution designed for modern teams and organizations.",
-    images: ["/og-image.png"],
+    images: ["/og-image.webp"],
     creator: "@alisamirali",
   },
   category: "productivity",
@@ -100,36 +87,69 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en" className={inter.variable}>
-      <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/favicon.ico" />
-        <link rel="manifest" href="/manifest.json" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-        />
-        <meta name="theme-color" content="#000000" />
-        <meta name="color-scheme" content="light dark" />
-      </head>
-      <body
-        className={cn(
-          inter.className,
-          "antialiased min-h-screen bg-background text-foreground"
-        )}
-      >
-        <QueryProvider>
-          {children}
-          <Toaster />
-        </QueryProvider>
-      </body>
-    </html>
-  );
+export const authMetadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
+export const workspaceMetadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
+export const projectMetadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
+export const taskMetadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
+export function generateMetadata(
+  title: string,
+  description: string,
+  options: {
+    noIndex?: boolean;
+    openGraph?: Partial<Metadata["openGraph"]>;
+    twitter?: Partial<Metadata["twitter"]>;
+  } = {}
+): Metadata {
+  const { noIndex = false, openGraph, twitter } = options;
+
+  return {
+    title,
+    description,
+    robots: noIndex ? { index: false, follow: false } : defaultMetadata.robots,
+    openGraph: {
+      ...defaultMetadata.openGraph,
+      title,
+      description,
+      ...openGraph,
+    },
+    twitter: {
+      ...defaultMetadata.twitter,
+      title,
+      description,
+      ...twitter,
+    },
+  };
 }
+
+export const seoConfig = {
+  default: defaultMetadata,
+  auth: authMetadata,
+  workspace: workspaceMetadata,
+  project: projectMetadata,
+  task: taskMetadata,
+  generate: generateMetadata,
+};
