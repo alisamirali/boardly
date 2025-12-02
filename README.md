@@ -68,7 +68,7 @@ Boardly delivers on all these requirements with a modern, intuitive interface an
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/your-org/boardly.git
+   git clone https://github.com/alisamirali/boardly.git
    cd boardly
    ```
 
